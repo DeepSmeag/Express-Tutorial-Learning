@@ -31,7 +31,6 @@ const users = [
 app.get("/api/users", (req, res) => {
   const query = req.query;
   const { filter, value } = query;
-  console.log(filter, value);
   if (!filter || !value) return res.send(users);
   if (filter && value) {
     const filteredUsers = users.filter((user) => user[filter].includes(value));
@@ -39,6 +38,7 @@ app.get("/api/users", (req, res) => {
     return res.send(filteredUsers);
   }
 });
+
 app.post("/api/users", (req, res) => {
   const { body } = req;
   if (!body) return res.sendStatus(400);
@@ -47,6 +47,7 @@ app.post("/api/users", (req, res) => {
   users.push(newUser);
   return res.send(newUser);
 });
+
 app.get("/api/users/:id", (req, res) => {
   const id = req.params.id;
   const parsedId = parseInt(id);
@@ -57,6 +58,22 @@ app.get("/api/users/:id", (req, res) => {
   const findUser = users.find((user) => user.id === parsedId);
   if (!findUser) return res.sendStatus(404);
   return res.send(findUser);
+});
+
+app.put("/api/users/:id", (req, res) => {
+  const id = req.params.id;
+  const parsedId = parseInt(id);
+  if (isNaN(parsedId)) {
+    return res.status(400).send({ message: "Invalid ID" });
+  }
+  const findUser = users.find((user) => user.id === parsedId);
+  if (!findUser) return res.sendStatus(404);
+  const { body } = req;
+  if (!body) return res.sendStatus(400);
+  if (!body.name) return res.status(400).send({ message: "Name is required" });
+  const updatedUser = { ...findUser, ...body };
+  users[users.indexOf(findUser)] = { id: findUser.id, ...body };
+  return res.send(updatedUser);
 });
 
 app.listen(PORT, () => {
