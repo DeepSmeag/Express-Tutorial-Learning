@@ -2,6 +2,19 @@ import express from "express";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+app.use(express.json());
+
+const printRequest = (req, res, next) => {
+  console.log(
+    "Request received on path:",
+    req.path,
+    "with method:",
+    req.method
+  );
+  next();
+};
+app.use(printRequest);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -25,6 +38,14 @@ app.get("/api/users", (req, res) => {
     if (!filteredUsers) return res.sendStatus(404);
     return res.send(filteredUsers);
   }
+});
+app.post("/api/users", (req, res) => {
+  const { body } = req;
+  if (!body) return res.sendStatus(400);
+  if (!body.name) return res.status(400).send({ message: "Name is required" });
+  const newUser = { id: users[users.length - 1].id + 1, ...body };
+  users.push(newUser);
+  return res.send(newUser);
 });
 app.get("/api/users/:id", (req, res) => {
   const id = req.params.id;

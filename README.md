@@ -21,3 +21,5 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 ### POST/PUT/DELETE/PATCH
 
 - never seen PATCH used;
+- careful with using json for posts/put/del requests; app.use(express.json()) at the top; otherwise there's not body to be found in your controllers
+- post requests are used to create new resources;
