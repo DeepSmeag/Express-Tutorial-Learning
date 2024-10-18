@@ -16,7 +16,15 @@ const users = [
 ];
 
 app.get("/api/users", (req, res) => {
-  res.send(users);
+  const query = req.query;
+  const { filter, value } = query;
+  console.log(filter, value);
+  if (!filter || !value) return res.send(users);
+  if (filter && value) {
+    const filteredUsers = users.filter((user) => user[filter].includes(value));
+    if (!filteredUsers) return res.sendStatus(404);
+    return res.send(filteredUsers);
+  }
 });
 app.get("/api/users/:id", (req, res) => {
   const id = req.params.id;
