@@ -6,9 +6,14 @@ import {
   validationResult,
 } from "express-validator";
 import { createUserValidationSchema } from "./validate/validationSchema.js";
+import productsRouter from "./routers/products.js";
+import cookiesRouter from "./routers/cookies.js";
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
+
+//! Middleware(s)
 
 const printRequest = (req, res, next) => {
   console.log(
@@ -20,6 +25,13 @@ const printRequest = (req, res, next) => {
   next();
 };
 app.use(printRequest);
+
+//! Router
+
+app.use("/api/products", productsRouter);
+app.use("/api/cookies", cookiesRouter);
+
+//! Basic routes
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -34,6 +46,7 @@ const users = [
   { id: 3, name: "Charlie" },
 ];
 
+//! Validation without schema
 app.get(
   "/api/users",
   query("filter")
@@ -59,6 +72,7 @@ app.get(
   }
 );
 
+//! Validation with schema
 app.post("/api/users", checkSchema(createUserValidationSchema), (req, res) => {
   const valResult = validationResult(req);
   if (!valResult.isEmpty())

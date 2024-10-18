@@ -15,3 +15,20 @@ export const createUserValidationSchema = {
     },
   },
 };
+export const createProductValidationSchema = {
+  name: {
+    isLength: {
+      options: {
+        min: 2,
+        max: 32,
+      },
+      errorMessage: "Name must be between 5 and 32 characters",
+    },
+    notEmpty: {
+      errorMessage: "Name is required",
+    },
+    isString: {
+      errorMessage: "Name must be a string",
+    },
+  },
+};

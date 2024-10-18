@@ -43,4 +43,17 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 
 ### Routers
 
--
+- has most of express()'s functions; can define route listeners and handlers just like with the basic app = express();
+- functions as a middleware, first it checks the request against the routers, in the order they were called with app.use(router)
+- allows us to clean up our code and separate concerns so that specialized modules can handle certain routes; in NestJS, simply declaring a controller is equivalent, though it forces a certain structure on the project; to do this, when doing app.use() put the path and the router so app.use('/api/products', productsRouter) any handler from productsRouter will start with that prefix of '/api/products'; this makes things clearer and it's easier to scale the code
+
+### Cookies
+
+- cookies' goal: to store data on the client's machine; can be used for authentication, session management, etc
+- they're just pieces of data, key-value pairs; they're stored by the browser and sent with every request to the server
+- can store stateful data in them; most common usage is for session management (so a sessionId or a JWT, but those are other subjects)
+- can be tampered with so must always be validated on the server side; for that matter, anything the server ever gets should be validated; never trust the client
+- check routers/cookies.js for experiments; see them in action in the browser developer tools
+- we can even have signed cookies, which are not necessarily secret content-wise but they have a signature (using a secret key which only the server has); we can verify their authenticity this way (so that a client cannot impersonate someone else or get access to unintended data)
+- there have been security issues over time with cookies, especially with authentication/authorization JWTs/sessionIDs; if someone steals your cookies, they can impersonate you on the internet since most websites don't check against a user/password combo on every request; they just check your cookies; this is how some YouTube channels were hacked in the past; but no one can get access to your cookies unless you have other security issues for them to be able to get to the browser
+- cookies are website-bound; so stealingcookies.com won't be able to access your cookies from facebook.com
