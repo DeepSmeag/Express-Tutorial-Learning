@@ -8,10 +8,11 @@ import {
 import { createUserValidationSchema } from "./validate/validationSchema.js";
 import productsRouter from "./routers/products.js";
 import cookiesRouter from "./routers/cookies.js";
+import sessionRouter from "./routers/session.js";
+import session from "express-session";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-app.use(express.json());
 
 //! Middleware(s)
 
@@ -25,11 +26,21 @@ const printRequest = (req, res, next) => {
   next();
 };
 app.use(printRequest);
+app.use(express.json());
+app.use(
+  session({
+    secret: "mysecrettoencodecookies",
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 60000 * 60 }, //1h
+  })
+);
 
 //! Router
 
 app.use("/api/products", productsRouter);
 app.use("/api/cookies", cookiesRouter);
+app.use("/api/session", sessionRouter);
 
 //! Basic routes
 

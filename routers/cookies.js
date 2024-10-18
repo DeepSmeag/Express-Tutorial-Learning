@@ -31,7 +31,7 @@ cookiesRouter.get("/secret", (req, res) => {
   if (cookies.secret) {
     return res.send("You have a secret cookie! Here's my secret then: 42");
   }
-  return res.sendStatus(404); // or 403, which is Unauthorized
+  return res.sendStatus(404); // or 403 or 401, which are Unauthorized, but different flavors
 });
 cookiesRouter.get("/signed", (req, res) => {
   const cookies = req.signedCookies;

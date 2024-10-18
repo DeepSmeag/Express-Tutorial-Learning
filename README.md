@@ -1,7 +1,7 @@
 # Express js full course following tutorial
 
 Link is here: https://www.youtube.com/watch?v=nH9E25nkk3I  
-Project is just an exemplification of what goes on in the tutorial to have hands-on practice. 7h of video, some notes along the way.
+Project is just an exemplification of what goes on in the tutorial to have hands-on practice. 7h of video, some notes along the way. And also personal thoughts & other info.
 
 ## Notes
 
@@ -57,3 +57,16 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 - we can even have signed cookies, which are not necessarily secret content-wise but they have a signature (using a secret key which only the server has); we can verify their authenticity this way (so that a client cannot impersonate someone else or get access to unintended data)
 - there have been security issues over time with cookies, especially with authentication/authorization JWTs/sessionIDs; if someone steals your cookies, they can impersonate you on the internet since most websites don't check against a user/password combo on every request; they just check your cookies; this is how some YouTube channels were hacked in the past; but no one can get access to your cookies unless you have other security issues for them to be able to get to the browser
 - cookies are website-bound; so stealingcookies.com won't be able to access your cookies from facebook.com
+- cookies are also the fundamental tool used by websites to track users; think e-commerce and social media learning what you're seeing and buying
+
+### Sessions
+
+- sessions are a way to keep track of a user's state (generally authentication); they're stored on the server, return a sessionID which is given to the browser; the browser sends the sessionID with every request; the server uses the sessionID to get the session data from its storage and verify the user; this way, a user can even be kept logged in after closing the browser
+- an advantage on session authentication instead of JWTs is that we can invalidate them on the server side anytime; we can also store other data, like user roles
+- using express-session here
+- check routers/session.js for experiments;
+- session and cookies are different, since session data is stored on the server; and that's important, since we don't want to let the client anything more than the bare necessity (which is the sessionID); session on server, cookie on the client
+- an example I provide with a middleware is to count how many times the users visits anything on the /api/session route; this is an example of how we can track user behavior, like how many times they visit a page, which pages etc; analytics platforms make use of techniques like this
+- it's common practice to store user data in the session, like user's ID, role, subscribed status etc; this way, we can keep track of the user's state and make decisions based on that; if a user is not subscribed, we can redirect them to the subscription page; or we could choose to show them different content, or prohibit access; keep in mind: everything must be done on the server;
+- also common practice to have an in-memory database like Redis for session storage; writing and reading from traditional DBs is rather slow for our purpose (always checking against the db) and keeping data on-server, in its memory, will quickly lead to failure in case of server restarts or scaling when many users start coming in; we want some persistence in case we need to restart the server; users should not be asked to login every time, it's annoying
+- common use-case for session besides auth - shopping carts; I've recently come upon a bug/missing feature on a popular fashion website; adding clothes to the cart while logged out, then logging in, caused the cart to become empty; so they did not consider transferring cart items from the logged out session to the logged in session (or they did not track the logged out session at all, which I highly doubt)
