@@ -1,5 +1,11 @@
 import express from "express";
-
+import {
+  checkSchema,
+  matchedData,
+  query,
+  validationResult,
+} from "express-validator";
+import { createUserValidationSchema } from "./validate/validationSchema.js";
 const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
@@ -28,22 +34,38 @@ const users = [
   { id: 3, name: "Charlie" },
 ];
 
-app.get("/api/users", (req, res) => {
-  const query = req.query;
-  const { filter, value } = query;
-  if (!filter || !value) return res.send(users);
-  if (filter && value) {
-    const filteredUsers = users.filter((user) => user[filter].includes(value));
-    if (!filteredUsers) return res.sendStatus(404);
-    return res.send(filteredUsers);
-  }
-});
+app.get(
+  "/api/users",
+  query("filter")
+    .isString()
+    .notEmpty()
+    .withMessage("Filter is required")
+    .isLength({ min: 3, max: 10 })
+    .withMessage("Filter must be a string with length between 3 and 10"),
+  (req, res) => {
+    const valResult = validationResult(req);
+    console.log(valResult);
 
-app.post("/api/users", (req, res) => {
-  const { body } = req;
-  if (!body) return res.sendStatus(400);
-  if (!body.name) return res.status(400).send({ message: "Name is required" });
-  const newUser = { id: users[users.length - 1].id + 1, ...body };
+    const query = req.query;
+    const { filter, value } = query;
+    if (!filter || !value) return res.send(users);
+    if (filter && value) {
+      const filteredUsers = users.filter((user) =>
+        user[filter].includes(value)
+      );
+      if (!filteredUsers) return res.sendStatus(404);
+      return res.send(filteredUsers);
+    }
+  }
+);
+
+app.post("/api/users", checkSchema(createUserValidationSchema), (req, res) => {
+  const valResult = validationResult(req);
+  if (!valResult.isEmpty())
+    return res.status(400).send({ errors: valResult.array() });
+
+  const data = matchedData(req);
+  const newUser = { id: users[users.length - 1].id + 1, ...data };
   users.push(newUser);
   return res.send(newUser);
 });
