@@ -90,6 +90,17 @@ app.patch("/api/users/:id", (req, res) => {
   users[users.indexOf(findUser)] = { id: findUser.id, ...updatedUser };
   return res.send(updatedUser);
 });
+app.delete("/api/users/:id", (req, res) => {
+  const id = req.params.id;
+  const parsedId = parseInt(id);
+  if (isNaN(parsedId)) {
+    return res.status(400).send({ message: "Invalid ID" });
+  }
+  const findUser = users.find((user) => user.id === parsedId);
+  if (!findUser) return res.sendStatus(404);
+  users.splice(users.indexOf(findUser), 1);
+  return res.send(findUser);
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
