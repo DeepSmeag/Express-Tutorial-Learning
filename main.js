@@ -72,7 +72,22 @@ app.put("/api/users/:id", (req, res) => {
   if (!body) return res.sendStatus(400);
   if (!body.name) return res.status(400).send({ message: "Name is required" });
   const updatedUser = { ...findUser, ...body };
-  users[users.indexOf(findUser)] = { id: findUser.id, ...body };
+  users[users.indexOf(findUser)] = { id: findUser.id, ...updatedUser };
+  return res.send(updatedUser);
+});
+app.patch("/api/users/:id", (req, res) => {
+  // the same as above because we handled both cases with same code
+  const id = req.params.id;
+  const parsedId = parseInt(id);
+  if (isNaN(parsedId)) {
+    return res.status(400).send({ message: "Invalid ID" });
+  }
+  const findUser = users.find((user) => user.id === parsedId);
+  if (!findUser) return res.sendStatus(404);
+  const { body } = req;
+  if (!body) return res.sendStatus(400);
+  const updatedUser = { ...findUser, ...body };
+  users[users.indexOf(findUser)] = { id: findUser.id, ...updatedUser };
   return res.send(updatedUser);
 });
 
