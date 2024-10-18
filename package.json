@@ -1,0 +1,14 @@
+{
+  "name": "express-js-full-course",
+  "version": "1.0.0",
+  "description": "Following course at this link: https://www.youtube.com/watch?v=nH9E25nkk3I",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node index.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
