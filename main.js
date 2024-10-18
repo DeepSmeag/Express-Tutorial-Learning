@@ -90,16 +90,24 @@ app.patch("/api/users/:id", (req, res) => {
   users[users.indexOf(findUser)] = { id: findUser.id, ...updatedUser };
   return res.send(updatedUser);
 });
-app.delete("/api/users/:id", (req, res) => {
+app.delete("/api/users/:id", (req, res, next) => {
   const id = req.params.id;
   const parsedId = parseInt(id);
   if (isNaN(parsedId)) {
     return res.status(400).send({ message: "Invalid ID" });
   }
   const findUser = users.find((user) => user.id === parsedId);
-  if (!findUser) return res.sendStatus(404);
+  if (!findUser) return next(new Error("User not found"));
   users.splice(users.indexOf(findUser), 1);
   return res.send(findUser);
+});
+
+//error handler
+app.use((err, req, res, next) => {
+  if (err) {
+    console.error(err.message);
+    res.status(500).send({ message: "Server Error" });
+  }
 });
 
 app.listen(PORT, () => {
