@@ -1,7 +1,7 @@
 # Express js full course following tutorial
 
 Link is here: https://www.youtube.com/watch?v=nH9E25nkk3I  
-Project is just an exemplification of what goes on in the tutorial to have hands-on practice.
+Project is just an exemplification of what goes on in the tutorial to have hands-on practice. 7h of video, some notes along the way.
 
 ## Notes
 
@@ -23,3 +23,11 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 - never seen PATCH used;
 - careful with using json for posts/put/del requests; app.use(express.json()) at the top; otherwise there's not body to be found in your controllers
 - post requests are used to create new resources; put requests are used to update existing resources; delete requests are used to delete resources; patch requests are used to update parts of resources
+- from what I've seen in the wild, put should be used to update parts & the entire resource; it's a bit more checking, but why introduce another method? there's usually just parts of a resource that are being updated anyway
+
+### Middleware
+
+- app.use(middlewarefunc); middlewarefunc = (req, res, next) => { ... }; next is a function that calls the next middleware in the chain
+- middleware is often used for logging, authentication and authorization
+- cool thing with express is that essentially everything is middleware, it's just a chain of functions that are being called; we can even put middleware after the route handler and they can be for error handling (in this case change app.get(route, callback); the callback becomes (req,res,next)=> {...})
+- middleware can be configured for use for independent route handlers (like app.use('/api/users',middlefunc)) or for entire routes (like app.use('/api', routeHandler)); this allows for project scaling (defining folders/files to handle certain routes instead of manually putting everything in main file)
