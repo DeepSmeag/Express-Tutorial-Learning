@@ -5,7 +5,7 @@ import { createProductValidationSchema } from "../validate/validationSchema.js";
 const productsRouter = Router();
 export default productsRouter;
 
-const products = [
+export const products = [
   { id: 1, name: "Apple" },
   { id: 2, name: "Banana" },
   { id: 3, name: "Cherry" },
@@ -13,20 +13,23 @@ const products = [
   { id: 5, name: "Kiwi" },
   { id: 6, name: "Lemon" },
 ];
-
-productsRouter.get("/", (req, res) => {
+export const productsRouterGet = (req, res) => {
   res.send(products);
-});
+};
+productsRouter.get("/", productsRouterGet);
+
+export const productsRouterPost = (req, res) => {
+  const valResult = validationResult(req);
+  if (!valResult.isEmpty()) {
+    return res.status(400).send(valResult);
+  }
+  const product = { id: products.length + 1, ...matchedData(req) };
+  products.push(product);
+  res.send(product);
+};
+
 productsRouter.post(
   "/",
   checkSchema(createProductValidationSchema),
-  (req, res) => {
-    const valResult = validationResult(req);
-    if (!valResult.isEmpty()) {
-      return res.status(400).send(valResult);
-    }
-    const product = { id: products.length + 1, ...matchedData(req) };
-    products.push(product);
-    res.send(product);
-  }
+  productsRouterPost
 );

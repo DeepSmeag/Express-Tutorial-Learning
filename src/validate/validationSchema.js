@@ -22,7 +22,7 @@ export const createProductValidationSchema = {
         min: 2,
         max: 32,
       },
-      errorMessage: "Name must be between 5 and 32 characters",
+      errorMessage: "Name must be between 2 and 32 characters",
     },
     notEmpty: {
       errorMessage: "Name is required",

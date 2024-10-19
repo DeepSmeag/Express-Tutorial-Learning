@@ -121,7 +121,22 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 ### Unit Testing
 
 - using Jest; it's the most popular framework for testing in Nodejs; made by Meta
+- don't forget to add the test script in package.json if jest did not override the file
 - apparently Jest is built to work with CommonJS, not ESM; to solve this, we have a few options: convert entire project to CommonJS (nope, the way forward is ESM), use an experimental flag to enable ESM support (people say there are some bugs), or use Babel as a transpiler; we go with babel here
 - we add some packages (see the video), then we configure _.babelrc_ and create a _jest.config.js_ file via _npm init jest@latest_ (or _pnpm create jest@latest_ in my case); there are some questions, the order in the video is y/n/node/n/v8/y
 - there's also configuration inside jest.config.js to enable transpiling with babel
 - industry-standard: placing all tests inside a \_\_tests\_\_ folder in src/
+- also industry-standard: placing all test files with the same name as the file they're testing, but with .test.js at the end
+- we are now forced to refactor our code since the tutorial so far did not follow best practices (it's a tutorial after all) and separate the routes from their handlers; in the video, he creates separate files; this would be confusing if someone where to check my code and not see the handlers, since I'm talking about them in the previous sections; so I'm creating separate functions as well but keeping them in the same file, right above the route definition
+- since our initial function (see products.spec.js) uses _res.send(products)_, we need to have a mock function for what .send() does; so we use a mockResponse object which we can define however we like; we define these mockRequest and mockResponse objects based on what we use inside the function (they become the function's req and res)
+- an issue with testing comes when we need to test a function that expects validation to have occured in middleware before (like our products POST route); there is a solution for this - mocking the module: _jest.mock('express-validator')_; this way, we can define the behavior of the module and the function will work as expected;
+- !one thing that I get differently from the video is errors with jest.mock for 'express-validator'; somehow, running the test tries to call checkSchema from the route handler; the solution I found was to mock the function I need (validationResult), but require the actual package for the rest; weird behaviour, I don't know enough about Jest to explain it; I can only say it's a version issue, since the video doesn't have it
+- it's great to be able to mock everything and test line by line, but if at any point the implementation changes (for other, more complex, functions), the tests will start failing; I'd rather black-box test the routes based on input; the issue comes with routes which have middleware applied, cause then you have to know what the middleware did and again, if at any point the implementation changes (like having a different format for an object or calling a different function), tests start failing;
+- the way jest mocks work is similar to dependency injection in OOP-based frameworks (like NestJS or Java's Spring)
+- I'd say jest requires a whole course onto itself, since it has so many ways of mocking stuff; files become too big rather quickly with so many dependencies and there is need for a structure;
+- we can also provide mock implementations; see hashPassword's implementation in the test file
+- I get the sense that the unit testing section of the video would not be practiced in the real world, at the very least because we're testing other functions, besides the one we're actually describing in the test case; might be wrong, haven't seen testing with jest done in a production environment (when there's limited time and a lot to do as well)
+
+### E2E testing
+
+- end-to-end testing is essential for the development process; in a highly dynamic environment, when the application changes and some functionalities might be dropped, there's little point in testing every single line; it makes more sense to test from the perspective of the user and see how things go; I endorse this type of testing as 1st choice, and unit testing if there's time or a special requirement
