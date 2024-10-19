@@ -31,7 +31,7 @@ sessionRouter.get("/visited-times", (req, res) => {
   res.send(`You have visited /api/session/ ${req.session.visitedTimes} times`);
 });
 
-const users = [
+export const users = [
   { id: 1, username: "admin", password: "admin" },
   { id: 2, username: "user", password: "user" },
   { id: 3, username: "guest", password: "guest" },

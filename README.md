@@ -1,7 +1,7 @@
 # Express js full course following tutorial
 
 Link is here: https://www.youtube.com/watch?v=nH9E25nkk3I  
-Project is just an exemplification of what goes on in the tutorial to have hands-on practice. 7h of video, some notes along the way. And also personal thoughts & other info.
+Project is just an exemplification of what goes on in the tutorial to have hands-on practice. 8h of video, some notes along the way. And also personal thoughts & other info.
 
 ## Notes
 
@@ -70,3 +70,15 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 - it's common practice to store user data in the session, like user's ID, role, subscribed status etc; this way, we can keep track of the user's state and make decisions based on that; if a user is not subscribed, we can redirect them to the subscription page; or we could choose to show them different content, or prohibit access; keep in mind: everything must be done on the server;
 - also common practice to have an in-memory database like Redis for session storage; writing and reading from traditional DBs is rather slow for our purpose (always checking against the db) and keeping data on-server, in its memory, will quickly lead to failure in case of server restarts or scaling when many users start coming in; we want some persistence in case we need to restart the server; users should not be asked to login every time, it's annoying
 - common use-case for session besides auth - shopping carts; I've recently come upon a bug/missing feature on a popular fashion website; adding clothes to the cart while logged out, then logging in, caused the cart to become empty; so they did not consider transferring cart items from the logged out session to the logged in session (or they did not track the logged out session at all, which I highly doubt)
+
+### Passport.js
+
+- passport is a library helping with authentication (middleware); it uses strategies = ways to authenticate users (Google, Apple, Facebook, Twitter, local, etc); for strategies based on 3rd party services, you'll need to register with them and get an API key
+- passport and passport-local are the packages we're working with
+- setup is more boilerplate than actually doing something; it's all about properly configuring strategies and then using the middleware on routes to
+- follow the code in strategies/local-strategy.js and routers/passport.js for a simple example (can only do it with postman/thunder, since we don't have a form to POST using the browser)
+- the mechanism is similar to cookies - we login using the right credentials (or we get an error); from there on, the user is saved to session (if we configured it as such) and we introduce a cookie on the client-side; this cookie can be used on subsequent requests to authorize the user against the session; we did a similar process before, manually, with cookies and sessions; passport just abstracts the process and makes it easier to use
+
+### Database & MongoDB
+
+-

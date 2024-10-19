@@ -9,7 +9,9 @@ import { createUserValidationSchema } from "./validate/validationSchema.js";
 import productsRouter from "./routers/products.js";
 import cookiesRouter from "./routers/cookies.js";
 import sessionRouter from "./routers/session.js";
+import passportRouter from "./routers/passport.js";
 import session from "express-session";
+import passport from "passport";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -35,12 +37,15 @@ app.use(
     cookie: { maxAge: 60000 * 60 }, //1h
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 //! Router
 
 app.use("/api/products", productsRouter);
 app.use("/api/cookies", cookiesRouter);
 app.use("/api/session", sessionRouter);
+app.use("/api/passport", passportRouter);
 
 //! Basic routes
 
