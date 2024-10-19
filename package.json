@@ -4,7 +4,8 @@
   "description": "Following course at this link: https://www.youtube.com/watch?v=nH9E25nkk3I",
   "main": "main.js",
   "scripts": {
-    "dev": "node --env-file=.env --watch main.js"
+    "dev": "node --env-file=.env --watch src/main.js",
+    "test": "jest"
   },
   "type": "module",
   "keywords": [],
@@ -20,5 +21,11 @@
     "mongoose": "^8.7.2",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.8",
+    "@babel/node": "^7.25.7",
+    "@babel/preset-env": "^7.25.8",
+    "jest": "^29.7.0"
   }
 }

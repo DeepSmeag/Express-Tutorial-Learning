@@ -120,4 +120,8 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 
 ### Unit Testing
 
-- using Jest; it's the most popular framework for testing in Nodejs;
+- using Jest; it's the most popular framework for testing in Nodejs; made by Meta
+- apparently Jest is built to work with CommonJS, not ESM; to solve this, we have a few options: convert entire project to CommonJS (nope, the way forward is ESM), use an experimental flag to enable ESM support (people say there are some bugs), or use Babel as a transpiler; we go with babel here
+- we add some packages (see the video), then we configure _.babelrc_ and create a _jest.config.js_ file via _npm init jest@latest_ (or _pnpm create jest@latest_ in my case); there are some questions, the order in the video is y/n/node/n/v8/y
+- there's also configuration inside jest.config.js to enable transpiling with babel
+- industry-standard: placing all tests inside a \_\_tests\_\_ folder in src/

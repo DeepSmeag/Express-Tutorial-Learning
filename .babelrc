@@ -1,0 +1,7 @@
+{
+    "presets": [["@babel/prest-env", {
+        "targets": {
+            "node": "current"
+        }
+    }]],
+}
