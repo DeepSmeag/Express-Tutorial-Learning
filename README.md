@@ -81,4 +81,23 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 
 ### Database & MongoDB
 
+- using mongoose ORM for mongodb as a nosql database offering; can download it and use locally or use a managed instance, which can be deployed both from their website or from CLI with atlas [link](https://www.mongodb.com/try/download/community); I ended up installing atlas since it's easy via CLI; I'd recommend downloading the server and running it locally for practice and quick removal afterwards
+
+#### From this point on, the server throws an error and doesn't start if there's no .env file configured with the MONGO\_\* variables; if you want to play around without the db stuff, comment out the connection code and don't use the db route
+
+- there's not much to say, except for any ORM (mongoose) some syntax needs to be learned; in-depth knowledge would require a specific DB course, not an express (backend) one; we just integrate mongoose a bit here
+
+- the video integrates db records with passport to show logging in and storing data in the db; the way I structured my routes would require writing passport code, though it's pretty straightforward
+
+### Hashing passwords
+
+- integrating hashing code within the db route; also check utils/helpers.js for the hashing and comparing function
+- **never ever** do we store passwords in plain text in reality; Nodejs offers the crypto module; there's also the bcrypt package, this is what we use here
+- we'll store hashed password in the db, along the plain text ones
+- the way hashing works (at an incredibly high level) is that we use a function that takes a string and returns a fixed-length string, which is our hashed password; in this process, there's also a "salt" being used, which is a secret string that only we should know and it's used to make the hash unique, so hackers can't reverse engineer the hash and get the password;
+- in bcrypt, the salt is incorporated in the password, so we don't need to store it and we can extract the salt, hash the plain text password, then compare the results; we do this by using the compare function from bcrypt
+- I saw a comment on the internet saying that 10 salt rounds are not enough and they'd recommend 12 or more; I don't know enough to give an opinion on this; more rounds, more time taken, but increased security; decide on your trade-offs
+
+### Session Store
+
 -

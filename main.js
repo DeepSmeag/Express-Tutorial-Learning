@@ -12,9 +12,25 @@ import sessionRouter from "./routers/session.js";
 import passportRouter from "./routers/passport.js";
 import session from "express-session";
 import passport from "passport";
+import mongoose from "mongoose";
+import dbRouter from "./routers/db.js";
 
 const PORT = process.env.PORT || 3000;
+//! Comment the db-related code if you want to play around without setting up db
+const MONGO_NAME = process.env.MONGO_NAME;
+if (!MONGO_NAME) throw new Error("Mongo URL is required");
 const app = express();
+
+await mongoose
+  .connect(
+    `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${MONGO_NAME}.mongodb.net`
+  )
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 //! Middleware(s)
 
@@ -46,6 +62,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/cookies", cookiesRouter);
 app.use("/api/session", sessionRouter);
 app.use("/api/passport", passportRouter);
+app.use("/api/db", dbRouter);
 
 //! Basic routes
 
