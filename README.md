@@ -140,3 +140,4 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 ### E2E testing
 
 - end-to-end testing is essential for the development process; in a highly dynamic environment, when the application changes and some functionalities might be dropped, there's little point in testing every single line; it makes more sense to test from the perspective of the user and see how things go; I endorse this type of testing as 1st choice, and unit testing if there's time or a special requirement
+- we're using supertest; also creating a separate (p)npm run script "test:e2e" to separate testing types
