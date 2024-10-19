@@ -110,4 +110,14 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 
 ### OAuth2 with Passportjs
 
--
+- if we want to use 3rd party providers for authentication, we use OAuth2; it's a protocol that 3rd party providers implement; Discord & Github are one of the easier ones to use (though I've had some trouble with Discord Apps disappearing randomly)
+- I'm not going to implement this part; it starts in the video at 5:11:58
+- passport has separate packages for all their strategy; _passport-discord_ would be required to follow the video
+- a _client_secret_ and _client_id_ are needed; there's also a few configuration steps on the provider's website, mainly setting a _redirect_url_; the way it works is that we let the user press a button that directs them to a Discord page (or Google or other) where they can login; then Discord redirects them to a URL we tell it to use, where we handle the data; what we get from a provider is a short-lived access token (it's valid for hours/days), and occasionally a refresh token (longer time frame); Facebook offers a separate mechanism, where the short-lived token is exchanged for a long-lived one through separate requests
+- once obtained, an access token enables us to get data about the user from the provider (Discord for example); this generally includes a name, email, profile picture URL; some also offer a _validated_email_ field, since not all providers require email validation; careful with choices here
+- in the video, instead of implementing a button to redirect us, we implement that via the route handler; by just doing app.get('/api/auth/discord', passport.authenticate('discord')); we get redirected to the Discord login page; then Discord redirects back to our server, where we can handle the login;
+- the data we get from Discord should be stored in the session so we know who the user is;
+
+### Unit Testing
+
+- using Jest; it's the most popular framework for testing in Nodejs;
