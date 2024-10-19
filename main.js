@@ -11,6 +11,7 @@ import cookiesRouter from "./routers/cookies.js";
 import sessionRouter from "./routers/session.js";
 import passportRouter from "./routers/passport.js";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import passport from "passport";
 import mongoose from "mongoose";
 import dbRouter from "./routers/db.js";
@@ -51,6 +52,9 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: { maxAge: 60000 * 60 }, //1h
+    store: MongoStore.create({
+      client: mongoose.connection.getClient(),
+    }),
   })
 );
 app.use(passport.initialize());

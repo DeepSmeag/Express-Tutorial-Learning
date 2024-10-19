@@ -100,4 +100,14 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 
 ### Session Store
 
+- a session store is used to persist session data when a user logs in;
+- the tutorial uses connect-mongo, which connects express-session with mongodb; it's a middleware that stores session data in the db; the package directly integrates with express-session and we just configure it my mentioning store: _mongoose.connection.getClient()_ when we call the session middleware in main.js
+- by simply doing this integration, if we do a POST on /api/session/auth with any of the 3 configured users, a new collection "sessions" appears, and we have our data stored there; this way, even if the server restarts, the user's session (what they have in their browser's cookies) is still valid;
+- now, even if we restart the server, if we GET /api/session/auth/admin-dashboard, we'll get the correct message
+- we can combine this with passport to get a robust auth system; extra steps would include using Redis or other in-memory db systems for faster session storage
+- we could now change _saveUnitialized: true_ in the config, meaning even a logged out user gets a session; we can use this to track them and then transfer this session to a logged in instance; important here: if we create sessions for any logged out user, if they clean their cookies and visit the website, we'll create a new session; this leads to a lot of data being stored in the db over time; so we need a cleanup mechanism
+- using _resave: true_ in the config will save session changes; the session's expiration date will update on every request for example; this might be useful, though such situations are rare
+
+### OAuth2 with Passportjs
+
 -
