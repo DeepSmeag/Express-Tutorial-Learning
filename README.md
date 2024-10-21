@@ -147,7 +147,7 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 ## Overall thoughts
 
 - long video, doesn't go into more general web subjects, but keeps to express; if anything seems weird, it might be you're lacking some other knowledge, like how requests to servers work;
-- first half is more basic, but the 2nd half took me a while to figure out in writing code, especially since my code diverged early from that in the video;
+- first half is more basic, but expect the 2nd half to take a longer while to figure out and write code, especially if you don't follow the video code exactly but write your own instead; it's better practice to force yourself to think about your own situation, rather than blindly follow the code in the video
 - I like the examples of integrating session management with authentication and db persistence; nice example, and anyone should be able to further extend it now to make it into a real app study-case
 - testing is tough unless some other structure information is provided; it's nice to be able to granularly test every single line of code, though in practice we'd avoid that due to time constraints I guess
 - I came to this video having seen (and taken notes) of another video on express ([link](https://www.youtube.com/watch?v=CnH3kAXSrmU); while you're there also check the Nodejs tutorial for even more fundamental stuff), which was shorter but still covered most aspects, at least on an intuitive level; this one handled the practical aspect of getting to write code;
