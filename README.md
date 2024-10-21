@@ -16,7 +16,7 @@ Project is just an exemplification of what goes on in the tutorial to have hands
 
 - "localhost:3000/api/users?name=John" what comes after "?" in any link is a query param; helps with being able to share links and get the same results
 - only using these with "GET" requests
-- careful with lowercase/uppercase; browser might remember previous url with query param and automatically lower-case yours to match that and you'll be confused for a while
+- careful with browser URL autocompletion; it might send you to a previously used URL and you'll be confused for a while (my case I was testing ?param=c and ?param=C and it was sending me to ?param=c)
 
 ### POST/PUT/DELETE/PATCH
 
